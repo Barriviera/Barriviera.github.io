@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pedro Barriviera — Sistemas Embarcados, IoT e Automação</title>
+<meta name="description" content="Portfólio de Pedro Barriviera, Engenheiro de Computação: sistemas embarcados, IoT, automação e prototipagem.">
+<meta property="og:title" content="Pedro Barriviera — Portfólio">
+<meta property="og:description" content="Sistemas embarcados, IoT e automação — do protótipo à validação em campo.">
+<meta property="og:image" content="img/perfil.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='6' y='6' width='20' height='20' rx='3' fill='%230b0f0e' stroke='%233ddc97' stroke-width='2'/%3E%3Cpath d='M10 2v4M16 2v4M22 2v4M10 26v4M16 26v4M22 26v4M2 10h4M2 16h4M2 22h4M26 10h4M26 16h4M26 22h4' stroke='%23e0a060' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0e0d; --bg2:#0e1413; --surface:#121a18; --surface2:#172220;
+  --line:#1f2c29; --line2:#2a3b37;
+  --text:#e6ecea; --muted:#8b9b96; --dim:#5d6d68;
+  --accent:#3ddc97; --accent-dim:rgba(61,220,151,.12);
+  --copper:#e0a060; --copper-dim:rgba(224,160,96,.12);
+  --radius:14px;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+  --head:'Space Grotesk',Inter,system-ui,sans-serif;
+  --body:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  --max:1120px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{background:var(--bg);color:var(--text);font:16px/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+::selection{background:var(--accent);color:#04120c}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+.mono{font-family:var(--mono)}
+
+/* ---------- NAV ---------- */
+.nav{position:fixed;inset:0 0 auto 0;z-index:50;background:rgba(10,14,13,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .3s}
+.nav.scrolled{border-bottom-color:var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:24px;height:64px}
+.logo{font-family:var(--mono);font-weight:500;font-size:15px;display:flex;align-items:center;gap:8px}
+.logo .chip{width:22px;height:22px;border:1.5px solid var(--accent);border-radius:4px;display:grid;place-items:center;font-size:10px;color:var(--accent);position:relative}
+.logo .cursor{color:var(--accent);animation:blink 1.1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.nav ul{list-style:none;display:flex;gap:4px;margin-left:auto}
+.nav ul a{font-size:14px;color:var(--muted);padding:8px 12px;border-radius:8px;transition:color .2s,background .2s}
+.nav ul a:hover{color:var(--text)}
+.nav ul a.active{color:var(--accent);background:var(--accent-dim)}
+.lang{display:flex;border:1px solid var(--line2);border-radius:8px;overflow:hidden;font-family:var(--mono);font-size:12px}
+.lang button{padding:6px 10px;color:var(--muted)}
+.lang button.on{background:var(--accent);color:#04120c;font-weight:500}
+.burger{display:none;width:40px;height:40px;border-radius:8px;border:1px solid var(--line2);align-items:center;justify-content:center}
+.burger span,.burger span::before,.burger span::after{display:block;width:16px;height:1.5px;background:var(--text);position:relative;transition:.25s}
+.burger span::before,.burger span::after{content:"";position:absolute;left:0}
+.burger span::before{top:-5px}.burger span::after{top:5px}
+.nav.open .burger span{background:transparent}
+.nav.open .burger span::before{top:0;transform:rotate(45deg)}
+.nav.open .burger span::after{top:0;transform:rotate(-45deg)}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:112px 0 72px;overflow:hidden}
+.pcb{position:absolute;inset:0;z-index:0;opacity:.55;pointer-events:none;
+  mask-image:radial-gradient(ellipse 80% 70% at 70% 45%,#000 20%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 70% at 70% 45%,#000 20%,transparent 75%)}
+.pcb path{fill:none;stroke:var(--line2);stroke-width:1.5}
+.pcb circle{fill:var(--bg);stroke:var(--line2);stroke-width:1.5}
+.pcb .pulse{stroke:var(--accent);stroke-width:2;stroke-dasharray:40 900;stroke-linecap:round;animation:flow 6s linear infinite;opacity:.9}
+.pcb .pulse.c{stroke:var(--copper);animation-duration:8s;animation-delay:-3s}
+@keyframes flow{from{stroke-dashoffset:940}to{stroke-dashoffset:0}}
+.hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.25fr 1fr;gap:56px;align-items:center;width:100%}
+.boot{font-family:var(--mono);font-size:13px;color:var(--dim);min-height:1.6em;margin-bottom:20px}
+.boot b{color:var(--accent);font-weight:400}
+.hero h1{font-family:var(--head);font-size:clamp(44px,7vw,80px);line-height:1;letter-spacing:-.03em;font-weight:700}
+.hero h1 span{display:block;color:var(--muted);font-weight:500}
+.role{font-family:var(--mono);font-size:clamp(13px,1.6vw,15px);color:var(--copper);margin:22px 0 18px;letter-spacing:.02em}
+.hero p.lead{color:var(--muted);font-size:clamp(16px,1.8vw,18px);max-width:560px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:10px;font-weight:500;font-size:15px;border:1px solid var(--line2);transition:transform .2s,border-color .2s,background .2s}
+.btn:hover{transform:translateY(-2px);border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:#04120c;border-color:var(--accent)}
+.btn.primary:hover{background:#56e8a8}
+.btn svg{width:17px;height:17px}
+
+/* datasheet card */
+.ds{background:linear-gradient(180deg,var(--surface),var(--bg2));border:1px solid var(--line2);border-radius:18px;padding:22px;position:relative;box-shadow:0 30px 80px -30px rgba(0,0,0,.8)}
+.ds::before,.ds::after{content:"";position:absolute;left:28px;right:28px;height:8px;
+  background:repeating-linear-gradient(90deg,var(--copper) 0 6px,transparent 6px 16px);opacity:.55}
+.ds::before{top:-9px}.ds::after{bottom:-9px}
+.ds-top{display:flex;gap:18px;align-items:center;padding-bottom:18px;border-bottom:1px dashed var(--line2)}
+.avatar{width:88px;height:88px;border-radius:14px;overflow:hidden;flex:none;border:1px solid var(--line2);background:var(--surface2);position:relative}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.avatar .ini{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--head);font-size:30px;font-weight:700;color:var(--accent)}
+.ds-id .pn{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.08em}
+.ds-id .nm{font-family:var(--head);font-size:20px;font-weight:600;line-height:1.2;margin:2px 0 6px}
+.status{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;color:var(--accent)}
+.status i{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 var(--accent);animation:ping 2s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(61,220,151,.6)}100%{box-shadow:0 0 0 10px rgba(61,220,151,0)}}
+.ds table{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px}
+.ds td{padding:8px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.ds tr:last-child td{border-bottom:0}
+.ds td:first-child{font-family:var(--mono);color:var(--dim);font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;width:38%;padding-top:10px}
+.scroll-hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:1;font-family:var(--mono);font-size:11px;color:var(--dim);display:flex;flex-direction:column;align-items:center;gap:8px}
+.scroll-hint i{width:1px;height:34px;background:linear-gradient(var(--accent),transparent);animation:drop 2s infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ---------- SECTIONS ---------- */
+section{padding:104px 0;position:relative}
+section.alt{background:var(--bg2);border-block:1px solid var(--line)}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:44px;flex-wrap:wrap}
+.tag{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.08em;margin-bottom:10px;display:block}
+.tag::before{content:"// "}
+h2{font-family:var(--head);font-size:clamp(30px,4.2vw,44px);line-height:1.1;letter-spacing:-.02em;font-weight:600}
+.sec-head p{color:var(--muted);max-width:440px}
+
+/* highlights */
+
+/* ---------- PROJECTS ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+.filters button,.chipbtn{font-family:var(--mono);font-size:12.5px;padding:7px 13px;border:1px solid var(--line2);border-radius:999px;color:var(--muted);transition:.2s}
+.filters button:hover,.chipbtn:hover{color:var(--text);border-color:var(--muted)}
+.filters button.on{background:var(--accent);border-color:var(--accent);color:#04120c}
+.active-skill{display:none;align-items:center;gap:10px;margin:-24px 0 28px;font-size:14px;color:var(--muted)}
+.active-skill.show{display:flex}
+.active-skill code{font-family:var(--mono);color:var(--copper);background:var(--copper-dim);padding:3px 9px;border-radius:6px}
+.active-skill button{font-size:13px;color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;text-align:left;transition:transform .3s,border-color .3s,box-shadow .3s}
+.card:hover{transform:translateY(-4px);border-color:var(--line2);box-shadow:0 20px 50px -25px rgba(0,0,0,.9)}
+.card.hide{display:none}
+.card .media{aspect-ratio:16/10;position:relative;overflow:hidden;background:var(--surface2)}
+.card .media img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.card:hover .media img{transform:scale(1.05)}
+.card .cat{position:absolute;top:12px;left:12px;font-family:var(--mono);font-size:11px;padding:4px 9px;border-radius:6px;background:rgba(10,14,13,.8);backdrop-filter:blur(6px);color:var(--accent);border:1px solid var(--line2)}
+.card .draft{position:absolute;top:12px;right:12px;font-family:var(--mono);font-size:10.5px;padding:4px 8px;border-radius:6px;border:1px dashed var(--copper);color:var(--copper);background:rgba(10,14,13,.8)}
+.card .body{padding:20px;display:flex;flex-direction:column;gap:10px;flex:1}
+.card .yr{font-family:var(--mono);font-size:12px;color:var(--dim)}
+.card h3{font-family:var(--head);font-size:19px;font-weight:600;line-height:1.25}
+.card p{font-size:14.5px;color:var(--muted);flex:1}
+.stack{display:flex;flex-wrap:wrap;gap:6px}
+.stack span{font-family:var(--mono);font-size:11px;color:var(--muted);background:var(--bg2);border:1px solid var(--line);padding:3px 8px;border-radius:5px}
+.stack span.hit{color:var(--copper);border-color:var(--copper)}
+.more{font-family:var(--mono);font-size:12.5px;color:var(--accent);display:flex;align-items:center;gap:6px;margin-top:4px}
+.card:hover .more .arr{transform:translateX(4px)}
+.more .arr{transition:transform .2s}
+
+/* photo placeholder */
+.ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--dim);font-family:var(--mono);font-size:11.5px;text-align:center;padding:12px;
+  background:
+    linear-gradient(var(--line) 1px,transparent 1px) 0 0/22px 22px,
+    linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/22px 22px,
+    var(--surface2)}
+.ph svg{width:34px;height:34px;stroke:var(--line2);opacity:1}
+.ph small{opacity:.8;word-break:break-all}
+
+/* ---------- SKILLS ---------- */
+.skills{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.sk{border:1px solid var(--line);border-radius:var(--radius);padding:22px;background:var(--surface);transition:border-color .3s}
+.sk:hover{border-color:var(--line2)}
+.sk .ic{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:var(--accent-dim);color:var(--accent);margin-bottom:14px}
+.sk:nth-child(even) .ic{background:var(--copper-dim);color:var(--copper)}
+.sk .ic svg{width:20px;height:20px}
+.sk h3{font-family:var(--head);font-size:17px;font-weight:600;margin-bottom:6px}
+.sk p{font-size:13.5px;color:var(--muted);margin-bottom:14px}
+.sk .chips{display:flex;flex-wrap:wrap;gap:6px}
+.chipbtn{font-size:11.5px;padding:5px 10px}
+.chipbtn[data-count]::after{content:attr(data-count);margin-left:6px;color:var(--accent)}
+.chipbtn:not([data-count]){cursor:default}
+.skills-hint{font-family:var(--mono);font-size:12px;color:var(--dim);margin-top:20px}
+
+/* ---------- TIMELINE ---------- */
+.tl{position:relative;display:grid;gap:14px;padding-left:34px}
+.tl::before{content:"";position:absolute;left:10px;top:10px;bottom:10px;width:2px;background:linear-gradient(var(--accent),var(--copper) 60%,var(--line2))}
+.ti{position:relative;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);transition:border-color .3s}
+.ti::before{content:"";position:absolute;left:-30px;top:24px;width:12px;height:12px;border-radius:3px;background:var(--bg);border:2px solid var(--accent)}
+.ti.edu::before{border-color:var(--copper);border-radius:50%}
+.ti.open{border-color:var(--line2)}
+.ti-h{width:100%;display:grid;grid-template-columns:1fr auto;gap:4px 16px;padding:18px 22px;text-align:left;align-items:center}
+.ti-h .when{font-family:var(--mono);font-size:12px;color:var(--dim);grid-column:1/-1}
+.ti-h h3{font-family:var(--head);font-size:18px;font-weight:600}
+.ti-h h3 small{font-family:var(--body);font-weight:400;color:var(--muted);font-size:15px}
+.ti-h .tog{width:28px;height:28px;border-radius:8px;border:1px solid var(--line2);display:grid;place-items:center;transition:transform .3s;color:var(--muted);grid-row:2;grid-column:2}
+.ti.open .tog{transform:rotate(45deg);color:var(--accent);border-color:var(--accent)}
+.ti-b{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s}
+.ti.open .ti-b{grid-template-rows:1fr}
+.ti-b>div{overflow:hidden}
+.ti-b ul{list-style:none;padding:0 22px 20px;display:grid;gap:7px}
+.ti-b li{font-size:14.5px;color:var(--muted);padding-left:18px;position:relative}
+.ti-b li::before{content:"›";position:absolute;left:2px;color:var(--accent);font-family:var(--mono)}
+
+/* ---------- CONTACT ---------- */
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.serial{background:#070a09;border:1px solid var(--line2);border-radius:var(--radius);overflow:hidden;font-family:var(--mono);font-size:13px}
+.serial-top{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);color:var(--dim);font-size:11.5px}
+.serial-top i{width:9px;height:9px;border-radius:50%;background:var(--line2)}
+.serial-top i:first-child{background:#e06060}.serial-top i:nth-child(2){background:var(--copper)}.serial-top i:nth-child(3){background:var(--accent)}
+.serial-top span{margin-left:auto}
+.serial pre{padding:16px;white-space:pre-wrap;color:var(--muted);line-height:1.75;min-height:220px}
+.serial pre .k{color:var(--accent)}.serial pre .v{color:var(--text)}.serial pre .c{color:var(--dim)}
+.clinks{display:grid;gap:12px}
+.cl{display:flex;align-items:center;gap:16px;padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:var(--surface);transition:.25s}
+.cl:hover{border-color:var(--accent);transform:translateX(4px)}
+.cl .ic{width:40px;height:40px;border-radius:10px;background:var(--accent-dim);color:var(--accent);display:grid;place-items:center;flex:none}
+.cl .ic svg{width:19px;height:19px}
+.cl small{display:block;font-family:var(--mono);font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
+.cl b{font-weight:500;font-size:15px;word-break:break-word}
+.cl .copy{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--dim);padding:5px 9px;border:1px solid var(--line2);border-radius:6px}
+.cl .copy:hover{color:var(--accent);border-color:var(--accent)}
+
+footer{padding:36px 0;border-top:1px solid var(--line);font-family:var(--mono);font-size:12px;color:var(--dim)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* ---------- MODAL ---------- */
+.modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(3,6,5,.8);backdrop-filter:blur(6px)}
+.modal.show{display:flex;animation:fade .25s}
+@keyframes fade{from{opacity:0}}
+.mbox{width:min(980px,100%);max-height:calc(100vh - 48px);overflow:auto;background:var(--surface);border:1px solid var(--line2);border-radius:18px;display:grid;grid-template-columns:1.2fr 1fr;animation:rise .3s}
+@keyframes rise{from{transform:translateY(16px)}}
+.gal{position:sticky;top:0;align-self:start;height:calc(100vh - 48px);max-height:900px;background:var(--bg2);min-height:340px}
+.gal .frame{position:absolute;inset:0}
+.gal .frame img{width:100%;height:100%;object-fit:contain;background:#070a09}
+.gal .nav-b{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;background:rgba(10,14,13,.8);border:1px solid var(--line2);display:grid;place-items:center;z-index:2}
+.gal .nav-b:hover{border-color:var(--accent);color:var(--accent)}
+.gal .prev{left:12px}.gal .next{right:12px}
+.gal .dots{position:absolute;bottom:14px;left:0;right:0;display:flex;justify-content:center;gap:6px;z-index:2}
+.gal .dots button{width:8px;height:8px;border-radius:50%;background:var(--line2)}
+.gal .dots button.on{background:var(--accent);width:22px;border-radius:4px}
+.gal .cap{position:absolute;left:0;right:0;bottom:0;padding:34px 16px 34px;background:linear-gradient(transparent,rgba(3,6,5,.85));font-size:12.5px;color:var(--text);text-shadow:0 1px 6px #000;z-index:2;text-align:center}
+.minfo{padding:28px;display:flex;flex-direction:column;gap:14px;position:relative}
+.minfo .x{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:8px;border:1px solid var(--line2);display:grid;place-items:center;color:var(--muted)}
+.minfo .x:hover{color:var(--text);border-color:var(--muted)}
+.minfo h3{font-family:var(--head);font-size:24px;line-height:1.2;padding-right:40px}
+.minfo .meta{padding-right:44px;font-family:var(--mono);font-size:12px;color:var(--dim)}
+.minfo p{color:var(--muted);font-size:15px}
+.minfo h4{font-family:var(--mono);font-size:11.5px;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-top:6px}
+.minfo ul{list-style:none;display:grid;gap:6px}
+.minfo li{font-size:14.5px;color:var(--muted);padding-left:18px;position:relative}
+.minfo li::before{content:"✓";position:absolute;left:0;color:var(--accent);font-size:12px;top:2px}
+.minfo .links{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+.minfo .links a{font-size:13.5px;padding:8px 14px}
+
+.ds-id .tagline{font-size:12px;color:var(--accent)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+.kpis div{border:1px solid var(--line2);border-radius:10px;padding:10px 12px;background:var(--bg2)}
+.kpis b{display:block;font-family:var(--head);font-size:19px;color:var(--accent);line-height:1.2}
+.kpis span{font-size:12px;color:var(--muted);line-height:1.35;display:block;margin-top:2px}
+.kpis:empty{display:none}
+.card .media img,.gal .frame img{position:absolute;inset:0;z-index:1}
+/* reveal */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s,transform .7s}
+.rv.in{opacity:1;transform:none}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:960px){
+  .hero .wrap{grid-template-columns:1fr;gap:48px}
+  .grid,.skills{grid-template-columns:repeat(2,1fr)}
+  .contact{grid-template-columns:1fr}
+  .mbox{grid-template-columns:1fr}
+  .gal{position:relative;min-height:0;height:min(62vw,420px);flex:none}
+}
+@media (max-width:760px){
+  .nav ul{position:fixed;top:64px;left:0;right:0;flex-direction:column;background:var(--bg);border-bottom:1px solid var(--line);padding:12px 16px 18px;gap:2px;transform:translateY(-8px);opacity:0;pointer-events:none;transition:.25s}
+  .nav.open ul{transform:none;opacity:1;pointer-events:auto}
+  .nav ul a{display:block;padding:12px}
+  .burger{display:flex}
+  .lang{margin-left:auto}
+  .wrap{padding:0 16px}
+  section{padding:76px 0}
+  .grid,.skills{grid-template-columns:1fr}
+  .hero{padding-top:96px}
+  .scroll-hint{display:none}
+  .modal{padding:0;align-items:flex-end}
+  .mbox{max-height:92vh;border-radius:18px 18px 0 0}
+  .minfo{padding:22px 18px 28px}
+}
+@media (max-width:420px){.cl .copy{display:none}}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}.rv{opacity:1;transform:none}
+}
+@media print{.nav,.pcb,.scroll-hint,.modal{display:none!important}body{background:#fff;color:#000}}
+</style>
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a href="#top" class="logo" aria-label="Início"><span class="chip">PB</span>barriviera<span class="cursor">_</span></a>
+    <ul id="menu">
+      <li><a href="#projetos" data-i18n="nav.projects">Projetos</a></li>
+      <li><a href="#competencias" data-i18n="nav.skills">Competências</a></li>
+      <li><a href="#trajetoria" data-i18n="nav.path">Trajetória</a></li>
+      <li><a href="#contato" data-i18n="nav.contact">Contato</a></li>
+    </ul>
+    <div class="lang" role="group" aria-label="Idioma / Language">
+      <button data-lang="pt" class="on">PT</button><button data-lang="en">EN</button>
+    </div>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span></button>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="top">
+  <svg class="pcb" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <g id="traces">
+      <path d="M1200 120H900l-60 60H640l-40 40v120"/>
+      <path d="M1200 220H960l-40 40H760l-40 40v200l60 60h160"/>
+      <path d="M560 0v80l60 60h160l40 40"/>
+      <path d="M1200 420h-120l-40-40H880"/>
+      <path d="M1200 560H1000l-60 60H700l-60-60V420"/>
+      <path d="M760 800v-80l40-40h240l60-60h100"/>
+      <path d="M480 800V660l60-60h60"/>
+      <path d="M1040 0v60l-40 40H860"/>
+    </g>
+    <path class="pulse" d="M1200 220H960l-40 40H760l-40 40v200l60 60h160"/>
+    <path class="pulse c" d="M1200 560H1000l-60 60H700l-60-60V420"/>
+    <path class="pulse" style="animation-delay:-2s;animation-duration:7s" d="M560 0v80l60 60h160l40 40"/>
+    <circle cx="600" cy="340" r="6"/><circle cx="940" cy="560" r="6"/><circle cx="820" cy="180" r="6"/>
+    <circle cx="880" cy="380" r="6"/><circle cx="640" cy="420" r="6"/><circle cx="600" cy="600" r="6"/><circle cx="860" cy="100" r="6"/>
+  </svg>
+
+  <div class="wrap">
+    <div>
+      <div class="boot" id="boot" aria-hidden="true"></div>
+      <h1>Pedro<span>Barriviera</span></h1>
+      <div class="role" data-i18n="hero.role">Engenheiro de Computação · Sistemas Embarcados, IoT e Automação</div>
+      <p class="lead" data-i18n="hero.lead">Desenvolvo e integro hardware e software para IoT e automação — sensores, microcontroladores, comunicação entre dispositivos e sistemas autônomos — levando projetos da definição de requisitos e do protótipo até a implantação e validação em campo.</p>
+      <div class="cta">
+        <a href="#projetos" class="btn primary"><span data-i18n="hero.cta1">Ver projetos</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a href="curriculo-pedro-barriviera.pdf" class="btn" download>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 21h16"/></svg>
+          <span data-i18n="hero.cta2">Baixar currículo</span></a>
+        <a href="#contato" class="btn"><span data-i18n="hero.cta3">Contato</span></a>
+      </div>
+    </div>
+
+    <aside class="ds rv" aria-label="Datasheet">
+      <div class="ds-top">
+        <div class="avatar">
+          <span class="ini">PB</span>
+          <!-- Coloque sua foto em img/perfil.jpg -->
+          <img src="img/perfil.jpg" alt="Foto de Pedro Barriviera" onerror="this.remove()">
+        </div>
+        <div class="ds-id">
+          <div class="pn">PART NO. PB-2026 · DATASHEET</div>
+          <div class="nm">Pedro Barriviera</div>
+          <div class="tagline mono" data-i18n="ds.tag">embarcados · IoT · automação</div>
+        </div>
+      </div>
+      <table>
+        <tr><td data-i18n="ds.f">Função</td><td data-i18n="ds.fv">Eng. de Computação — embarcados, IoT e automação</td></tr>
+        <tr><td data-i18n="ds.lang">Linguagens</td><td class="mono" style="font-size:12.5px">C/C++ · Python · JS · SQL</td></tr>
+        <tr><td data-i18n="ds.hw">Plataformas</td><td class="mono" style="font-size:12.5px">ESP32 · Raspberry Pi · MCUs</td></tr>
+        <tr><td data-i18n="ds.io">Comunicação</td><td data-i18n="ds.iov">Protocolos seriais, industriais e sem fio</td></tr>
+        <tr><td data-i18n="ds.loc">Local</td><td data-i18n="ds.locv">Jundiaí-SP · aberto a mudança</td></tr>
+        <tr><td data-i18n="ds.edu">Formação</td><td data-i18n="ds.eduv">Eng. de Computação — IFSP (2026)</td></tr>
+      </table>
+    </aside>
+  </div>
+  <a href="#projetos" class="scroll-hint" aria-hidden="true">scroll<i></i></a>
+</header>
+
+<!-- ================= PROJECTS ================= -->
+<section id="projetos">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <span class="tag" data-i18n="proj.tag">projetos</span>
+        <h2 data-i18n="proj.title">Principais projetos</h2>
+      </div>
+      <div class="filters" id="filters" role="group" aria-label="Filtro"></div>
+    </div>
+    <div class="active-skill" id="activeSkill">
+      <span data-i18n="proj.using">Projetos com</span> <code id="activeSkillName"></code>
+      <button id="clearSkill" data-i18n="proj.clear">limpar filtro</button>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- ================= SKILLS ================= -->
+<section id="competencias" class="alt">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <span class="tag" data-i18n="sk.tag">competências</span>
+        <h2 data-i18n="sk.title">Stack e habilidades</h2>
+      </div>
+      <p data-i18n="sk.sub">Clique numa tecnologia para ver os projetos em que ela foi usada.</p>
+    </div>
+    <div class="skills" id="skills"></div>
+  </div>
+</section>
+
+<!-- ================= TIMELINE ================= -->
+<section id="trajetoria">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <span class="tag" data-i18n="tl.tag">trajetória</span>
+        <h2 data-i18n="tl.title">Experiência e formação</h2>
+      </div>
+      <p data-i18n="tl.sub">Uma trajetória que começou na usinagem e passou pela fabricação digital até chegar a sistemas embarcados e IoT.</p>
+    </div>
+    <div class="tl" id="timeline"></div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contato" class="alt">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div>
+        <span class="tag" data-i18n="ct.tag">contato</span>
+        <h2 data-i18n="ct.title">Vamos conversar?</h2>
+      </div>
+      <p data-i18n="ct.sub">Sistemas embarcados, IoT, automação e P&amp;D. Fale comigo pelo canal que preferir.</p>
+    </div>
+    <div class="contact">
+      <div class="serial rv" aria-label="Serial monitor">
+        <div class="serial-top"><i></i><i></i><i></i><span>/dev/ttyUSB0 · 115200 baud</span></div>
+        <pre id="serial"></pre>
+      </div>
+      <div class="clinks rv">
+        <a class="cl" href="mailto:pedrobarriviera@gmail.com">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+          <span><small>E-mail</small><b>pedrobarriviera@gmail.com</b></span>
+          <button class="copy" data-copy="pedrobarriviera@gmail.com" data-i18n="ct.copy">copiar</button>
+        </a>
+        <a class="cl" href="https://www.linkedin.com/in/pedro-barriviera-868550235" target="_blank" rel="noopener">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.1c0-1.22-.02-2.78-1.7-2.78-1.7 0-1.96 1.33-1.96 2.7V21h-4z"/></svg></span>
+          <span><small>LinkedIn</small><b>in/pedro-barriviera</b></span>
+        </a>
+        <a class="cl" href="https://github.com/Barriviera" target="_blank" rel="noopener">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.1-1.46-1.1-1.46-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.1.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.58 9.58 0 015 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0012 2z"/></svg></span>
+          <span><small>GitHub</small><b>github.com/Barriviera</b></span>
+        </a>
+        <a class="cl" href="https://wa.me/5511942151170" target="_blank" rel="noopener">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.5 2.1L8 9.9a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.4c.9.3 1.8.6 2.8.7a2 2 0 011.7 2z"/></svg></span>
+          <span><small data-i18n="ct.phone">Telefone / WhatsApp</small><b>+55 11 94215-1170</b></span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr"></span> Pedro Barriviera</span>
+    <span data-i18n="ft">feito à mão em HTML/CSS/JS · hospedado no GitHub Pages</span>
+  </div>
+</footer>
+
+<!-- ================= MODAL ================= -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="mbox">
+    <div class="gal" id="gal"></div>
+    <div class="minfo">
+      <button class="x" id="mClose" aria-label="Fechar">✕</button>
+      <div class="meta" id="mMeta"></div>
+      <h3 id="mTitle"></h3>
+      <p id="mDesc"></p>
+      <div class="kpis" id="mStats"></div>
+      <h4 data-i18n="m.did">O que eu fiz</h4>
+      <ul id="mList"></ul>
+      <h4 data-i18n="m.stack">Tecnologias</h4>
+      <div class="stack" id="mStack"></div>
+      <div class="links" id="mLinks"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   DADOS DO PORTFÓLIO — edite aqui.
+   - Fotos: coloque os arquivos na pasta img/ com os nomes indicados.
+     Se a foto não existir, aparece um placeholder com o nome esperado.
+   - draft:true mostra o selo "a preencher". Remova quando completar.
+   - tags: usadas pelo filtro de competências (precisam bater com os
+     ids dos chips em SKILLS abaixo).
+   ===================================================================== */
+const CATS = {
+  all:   {pt:'Todos', en:'All'},
+  emb:   {pt:'Embarcados & IoT', en:'Embedded & IoT'},
+  auto:  {pt:'Automação & Instrumentação', en:'Automation & Instrumentation'},
+  fab:   {pt:'Prototipagem & Fabricação', en:'Prototyping & Fabrication'},
+  sw:    {pt:'Software', en:'Software'}
+};
+
+const AGRI = 'SmartAgri';
+
+const PROJECTS = [
+  {
+    id:'coletor', cat:'emb',
+    year:'2025 – 2026', org:{pt:'Projeto Final de Curso · IFSP', en:'Capstone project · IFSP'},
+    title:{pt:'Coletor de esporos com monitoramento ambiental', en:'Spore trap with environmental monitoring'},
+    short:{pt:'Equipamento autônomo movido a energia solar que coleta esporos de fungos e registra temperatura e umidade em campo, sem depender de rede elétrica nem de internet.',
+           en:'Solar-powered autonomous device that traps fungal spores and logs temperature and humidity in the field, with no grid power or internet needed.'},
+    desc:{pt:'Coletores de esporos convencionais sofrem com fluxo de ar instável e não registram o clima no momento da coleta. Desenvolvi um coletor fechado, com cooler e funil que direcionam o ar contra uma lâmina adesiva (impacto inercial), e um data logger ESP32 que registra temperatura e umidade durante a coleta. Isso ajuda a prever doenças como a ferrugem asiática da soja. O equipamento é usado por institutos de pesquisa e empresas agrícolas, e uma unidade operou por mais de um ano em Gana sem falhas reportadas.',
+          en:'Conventional spore traps suffer from unstable airflow and don’t record the weather at sampling time. I built an enclosed trap in which a fan and a funnel drive air onto an adhesive slide (inertial impaction), plus an ESP32 data logger that records temperature and humidity alongside each sample, helping forecast diseases such as Asian soybean rust. It is used by research institutes and agricultural companies, and one unit ran in Ghana for over a year with no reported failures.'},
+    stats:[
+      {v:'~5', l:{pt:'dias de autonomia sem sol', en:'days of autonomy without sun'}},
+      {v:'+1 ano', l:{pt:'em campo (Gana)', en:'in the field (Ghana)'}, ven:'1+ yr'},
+      {v:'20,8 Ah', l:{pt:'banco Li-ion + painel 20 W', en:'Li-ion bank + 20 W panel'}, ven:'20.8 Ah'},
+      {v:'10', l:{pt:'sensores equalizados', en:'sensors cross-calibrated'}}
+    ],
+    did:{pt:['Firmware em C++ (PlatformIO) para ESP32: leitura do BME280 via I²C, relógio RTC DS3231 e ciclos de deep sleep','Armazenamento em CSV diário na flash, com rotação FIFO (mais de 2,6 anos de dados em intervalos de 30 min)','Hotspot Wi-Fi com página web embarcada (sporetrap.local) para baixar os dados e sincronizar o relógio pelo celular','PCB de controle de carga solar em EasyEDA (buck LM2596 + proteção DW01A/8205A) para 8 células 18650','Equalização de 10 sensores BME280 com multiplexadores TCA9548A e cálculo de offsets','Projeto mecânico: abrigo tipo Stevenson Screen, funil de pressurização e gaveta porta-lâmina impressos em PETG','Dimensionamento do painel solar com base em dados reais de um logger de tensão e corrente (troca de 10 W para 20 W)'],
+         en:['C++ firmware (PlatformIO) for ESP32: BME280 over I²C, DS3231 RTC and deep-sleep cycles','Daily CSV files on flash with FIFO rotation (2.6+ years of data at 30-min intervals)','Wi-Fi hotspot with an embedded web page (sporetrap.local) to download data and sync the clock from a phone','Solar charge-controller PCB in EasyEDA (LM2596 buck + DW01A/8205A protection) for 8×18650 cells','Cross-calibration of 10 BME280 sensors using TCA9548A multiplexers and per-sensor offsets','Mechanical design: Stevenson-screen-style shelter, pressurising funnel and slide drawer printed in PETG','Solar panel sizing from real voltage/current logger data (upgraded from 10 W to 20 W)']},
+    tags:['c','esp32','sensors','i2c','wifi','http','lowpower','solar','data','pcb','print3d','proto','test','hwsw'],
+    photos:[
+      {src:'img/coletor-1.jpg', cap:{pt:'Coletor de esporos em campo', en:'Spore trap in the field'}},
+      {src:'img/coletor-3d.jpg', cap:{pt:'Modelo 3D: funil, cooler e gaveta porta-lâmina', en:'3D model: funnel, fan and slide drawer'}},
+      {src:'img/coletor-fluxo.jpg', cap:{pt:'Fluxo de ar até a lâmina adesiva', en:'Airflow onto the adhesive slide'}},
+      {src:'img/coletor-modulos.jpg', cap:{pt:'Módulo base e módulo data logger', en:'Base module and data-logger module'}},
+      {src:'img/coletor-arquitetura.jpg', cap:{pt:'Arquitetura completa do sistema', en:'Full system architecture'}},
+      {src:'img/coletor-gaveta.jpg', cap:{pt:'Gaveta impressa em PETG com lâmina de 76×26 mm', en:'PETG-printed drawer with 76×26 mm slide'}},
+      {src:'img/coletor-equalizacao.jpg', cap:{pt:'Bancada de equalização com 10 BME280 + TCA9548A', en:'Calibration rig: 10× BME280 + TCA9548A'}},
+      {src:'img/coletor-pcb-carga.jpg', cap:{pt:'PCB do controlador de carga solar (EasyEDA)', en:'Solar charge-controller PCB (EasyEDA)'}},
+      {src:'img/coletor-interface.jpg', cap:{pt:'Interface web no celular: download e sincronização', en:'Phone web UI: download and clock sync'}},
+      {src:'img/coletor-grafico-paineis.jpg', cap:{pt:'Tensão da bateria: painel de 10 W × 20 W', en:'Battery voltage: 10 W vs 20 W panel'}}
+    ],
+    links:[]
+  },
+  {
+    id:'fenotipagem', cat:'emb',
+    year:'2025 – 2026', org:AGRI,
+    title:{pt:'Fenotipagem de plantas com câmera de profundidade', en:'Depth-based plant phenotyping'},
+    short:{pt:'Camada de aquisição que sincroniza imagens RGB e de profundidade para medir altura, área foliar e índices de vegetação de cada planta.',
+           en:'Acquisition layer that syncs RGB and depth imaging to measure each plant’s height, leaf area and vegetation indices.'},
+    desc:{pt:'Sistema de fenotipagem em casa de vegetação: câmeras montadas num trilho sobre as plantas capturam imagem e profundidade. Fui responsável pela camada de aquisição, da integração do sensor de profundidade à estruturação dos dados para análise, e também pela parte de hardware. O resultado é um relatório por planta (máscara, heatmap de altura, superfície 3D, área calibrada) e uma tabela com as métricas de todo o experimento.',
+          en:'Greenhouse phenotyping system: cameras on a rail above the plants capture colour and depth. I owned the acquisition layer, from integrating the depth sensor to structuring the data for analysis, as well as the hardware side. The output is a per-plant report (mask, height heatmap, 3D surface, calibrated area) and a table with metrics for the whole experiment.'},
+    stats:[
+      {v:'RGB + D', l:{pt:'captura sincronizada', en:'synchronised capture'}},
+      {v:'15', l:{pt:'métricas por planta', en:'metrics per plant'}},
+      {v:'PCB', l:{pt:'própria para a eletrônica', en:'custom board for the electronics'}}
+    ],
+    did:{pt:['Integração do sensor de profundidade (Intel RealSense D435) ao sistema','Uso de softwares de fotogrametria para obter dados mais precisos','Desenvolvimento da comunicação e da aquisição dos dados','Sincronização entre a profundidade e a captura de imagens','Estruturação e processamento dos dados: altura, área foliar, dimensões da copa, índices GLI/ExG/VARI/GRVI, convexidade e solidez','Hardware: montagem e integração de circuitos, desenvolvimento de PCB e integração com sensores'],
+         en:['Integrated the depth sensor (Intel RealSense D435) into the system','Used photogrammetry software for more accurate data','Built the communication and data-acquisition layer','Synchronised depth with image capture','Structured and processed the data: height, leaf area, canopy size, GLI/ExG/VARI/GRVI indices, convexity and solidity','Hardware: circuit assembly and integration, PCB development and sensor integration']},
+    tags:['python','rpi','sensors','vision','photogram','data','pcb','hwsw','test'],
+    photos:[
+      {src:'img/feno-1.jpg', cap:{pt:'Validação na casa de vegetação', en:'Validation in the greenhouse'}},
+      {src:'img/feno-relatorio.jpg', cap:{pt:'Relatório gerado por planta: máscara, altura e superfície 3D', en:'Per-plant report: mask, height and 3D surface'}},
+      {src:'img/feno-realsense.jpg', cap:{pt:'Streams de profundidade e RGB da RealSense D435', en:'RealSense D435 depth and RGB streams'}},
+      {src:'img/feno-dados.jpg', cap:{pt:'Métricas extraídas por planta e tratamento', en:'Metrics per plant and treatment'}},
+      {src:'img/feno-pcb-design.jpg', cap:{pt:'Revisão do projeto da PCB', en:'Reviewing the PCB design'}},
+      {src:'img/feno-bancada.jpg', cap:{pt:'Montagem e integração dos circuitos', en:'Assembling and integrating the circuits'}}
+    ],
+    links:[]
+  },
+  {
+    id:'microscopio', cat:'auto',
+    year:'2025 – 2026', org:AGRI,
+    title:{pt:'Microscópio automatizado para escaneamento de lâminas', en:'Automated slide-scanning microscope'},
+    short:{pt:'Adaptação da plataforma open-source Squid para escanear lâminas de esporos em alta resolução e gerar imagens para modelos de IA.',
+           en:'Adapting the open-source Squid platform to scan spore slides at high resolution and produce images for AI models.'},
+    desc:{pt:'O objetivo era um microscópio que escaneasse a lâmina do coletor sozinho, tirando várias fotos em alta resolução e montando a imagem completa para treinar modelos de inteligência artificial que reconhecem os esporos. Partimos do Squid, plataforma open-source de microscopia do Prakash Lab (Stanford), e adaptei o projeto à realidade brasileira: algumas peças foram reaproveitadas e outras eu redesenhei e adaptei, acompanhando e validando a usinagem numa empresa parceira.',
+          en:'The goal was a microscope that scans the trap’s slide on its own, taking many high-resolution photos and stitching the full image to train AI models that recognise spores. We started from Squid, the open-source microscopy platform from Stanford’s Prakash Lab, and I adapted it to local constraints in Brazil: some parts were reused and others I redesigned, following and validating the machining at a partner shop.'},
+    stats:[
+      {v:'XYZ', l:{pt:'varredura automática da lâmina', en:'automated slide scanning'}},
+      {v:'~21 µm', l:{pt:'esporos identificados', en:'spores resolved'}},
+      {v:'IA', l:{pt:'dataset para reconhecimento', en:'dataset for recognition'}, ven:'AI'}
+    ],
+    did:{pt:['Modelagem e adaptação de peças no Fusion 360, com desenhos técnicos para usinagem','Acompanhamento e validação da usinagem na empresa parceira, e montagem do equipamento','Firmware e automação: controle do estágio motorizado, foco e varredura automática da lâmina','Montagem da imagem da lâmina (stitching) e preparo das imagens para o modelo de IA'],
+         en:['Modelled and adapted parts in Fusion 360, with technical drawings for machining','Followed and validated machining at the partner shop, and assembled the instrument','Firmware and automation: motorised stage control, focus and automatic slide scanning','Stitched the slide image and prepared the images for the AI model']},
+    tags:['fusion','cnc','c','python','vision','hwsw','proto'],
+    photos:[
+      {src:'img/micro-1.jpg', cap:{pt:'Estrutura montada com as peças usinadas', en:'Assembled frame with machined parts'}},
+      {src:'img/micro-render.jpg', cap:{pt:'Modelo 3D com estágio motorizado', en:'3D model with motorised stage'}},
+      {src:'img/micro-cad.jpg', cap:{pt:'CAD no Fusion 360 e desenhos técnicos', en:'Fusion 360 CAD and technical drawings'}},
+      {src:'img/micro-esporo.jpg', cap:{pt:'Esporo de ~21 µm capturado', en:'~21 µm spore captured'}}
+    ],
+    links:[{label:{pt:'Sobre o Squid', en:'About Squid'}, url:'https://www.hackster.io/news/squid-a-microscope-platform-for-advanced-projects-aims-at-reduced-cost-and-better-accessibility-c637dce4a30e'}]
+  },
+  {
+    id:'pcb-conversores', cat:'emb',
+    year:'2025 – 2026', org:AGRI,
+    title:{pt:'PCB unificada de comunicação serial', en:'Unified serial-interface PCB'},
+    short:{pt:'Uma HAT para Raspberry Pi que substituiu vários conversores avulsos RS-422/RS-485 → UART que queimavam com frequência.',
+           en:'A Raspberry Pi HAT replacing several off-the-shelf RS-422/RS-485 → UART converters that kept burning out.'},
+    desc:{pt:'O sistema dependia de vários módulos conversores (RS-422 para UART, RS-485 para UART etc.), que são frágeis e queimavam com facilidade. Projetei no EasyEDA uma placa única, no formato de HAT para Raspberry Pi, que reúne os transceptores, a regulação de alimentação a partir de 12 V e LEDs de TX/RX para diagnóstico.',
+          en:'The system relied on several converter modules (RS-422 to UART, RS-485 to UART, etc.) that were fragile and burned out easily. I designed a single board in EasyEDA, in Raspberry Pi HAT format, that brings together the transceivers, power regulation from 12 V and TX/RX LEDs for diagnostics.'},
+    stats:[
+      {v:'N → 1', l:{pt:'conversores numa placa', en:'converters in one board'}},
+      {v:'12 V', l:{pt:'entrada com regulador buck', en:'input with buck regulator'}}
+    ],
+    did:{pt:['Esquemático e layout no EasyEDA','Transceptores RS-485/RS-422 (MAX3485) para UART da Raspberry Pi','Regulador buck (XL4015) para alimentar a partir de 12 V','LEDs de TX/RX por canal para depuração em campo','Montagem, testes e integração ao sistema'],
+         en:['Schematic and layout in EasyEDA','RS-485/RS-422 transceivers (MAX3485) to the Raspberry Pi UART','Buck regulator (XL4015) for 12 V input','Per-channel TX/RX LEDs for field debugging','Assembly, testing and system integration']},
+    tags:['pcb','rs485','uart','rpi','hwsw','test'],
+    photos:[
+      {src:'img/pcb-1.jpg', cap:{pt:'Placa montada (v1.0)', en:'Assembled board (v1.0)'}},
+      {src:'img/pcb-layout.jpg', cap:{pt:'Layout no EasyEDA', en:'EasyEDA layout'}},
+      {src:'img/pcb-layout-2.jpg', cap:{pt:'Layout da revisão', en:'Revision layout'}}
+    ],
+    links:[]
+  },
+  {
+    id:'logger', cat:'emb',
+    year:'2025', org:AGRI,
+    title:{pt:'Logger de tensão e corrente para sistemas solares', en:'Voltage & current logger for solar systems'},
+    short:{pt:'Ferramenta de diagnóstico com ESP32 e dois INA219 para registrar ciclos de carga e descarga dos coletores em campo.',
+           en:'ESP32 + dual INA219 diagnostic tool that records the charge/discharge cycles of the field units.'},
+    desc:{pt:'Para validar o balanço energético dos coletores, montei um logger ligado entre o painel solar e o equipamento e entre a bateria e o equipamento. Os dados reais mostraram que o painel de 10 W era deficitário em dias nublados, o que levou à troca pelo de 20 W. O firmware reaproveita a arquitetura do coletor: LittleFS, CSV, RTC e servidor web para download.',
+          en:'To validate the traps’ energy budget, I built a logger placed between the solar panel and the device and between the battery and the device. Real data showed the 10 W panel ran a deficit on cloudy days, which led to the switch to 20 W. The firmware reuses the trap’s architecture: LittleFS, CSV, RTC and a download web server.'},
+    stats:[
+      {v:'2×', l:{pt:'INA219 (painel e bateria)', en:'INA219 (panel & battery)'}},
+      {v:'1 min', l:{pt:'médias gravadas em CSV', en:'averages logged to CSV'}},
+      {v:'10→20 W', l:{pt:'decisão de projeto baseada em dados', en:'data-driven design decision'}}
+    ],
+    did:{pt:['ESP32 com dois INA219 (0x40 e 0x41) medindo tensão e corrente','Médias por minuto gravadas em CSV no LittleFS, com controle de tamanho','Access point Wi-Fi com página para download e sincronização do RTC','Análise dos dados de campo para dimensionar o painel solar'],
+         en:['ESP32 with two INA219s (0x40, 0x41) measuring voltage and current','Per-minute averages stored as CSV on LittleFS with size control','Wi-Fi access point with a page for download and RTC sync','Field-data analysis to size the solar panel']},
+    tags:['c','esp32','i2c','wifi','http','data','solar','test'],
+    photos:[
+      {src:'img/logger-1.jpg', cap:{pt:'Logger conectado ao coletor (ESP32 + INA219)', en:'Logger wired to the trap (ESP32 + INA219)'}},
+      {src:'img/logger-paineis.jpg', cap:{pt:'Teste de campo: painéis de 10 W e 20 W', en:'Field test: 10 W and 20 W panels'}},
+      {src:'img/coletor-grafico-paineis.jpg', cap:{pt:'Tensão da bateria registrada pelo logger', en:'Battery voltage recorded by the logger'}}
+    ],
+    links:[]
+  },
+  {
+    id:'jobgrid', cat:'sw',
+    year:'2026', org:{pt:'Projeto pessoal', en:'Personal project'},
+    title:{pt:'JobGrid: painel de busca de vagas', en:'JobGrid: job-search dashboard'},
+    short:{pt:'App web que transforma a busca diária de vagas numa lista de links prontos em 11 sites, por cidade, palavra-chave e frequência.',
+           en:'Web app that turns the daily job hunt into a list of ready-made search links across 11 sites, by city, keyword and frequency.'},
+    desc:{pt:'Quem procura emprego repete a mesma rotina todo dia: abrir cada site, digitar o cargo, escolher a cidade. O JobGrid gera uma linha por busca (site × cidade × palavra-chave), marca o que já foi visto e junta cargos e palavras-chave numa busca booleana única. Tudo num arquivo HTML, sem instalação, com os dados salvos só no navegador.',
+          en:'Job seekers repeat the same routine every day: open each site, type the role, pick the city. JobGrid builds one row per search (site × city × keyword), tracks what you’ve checked and merges roles and keywords into a single boolean query. All in one HTML file, no install, with data kept only in the browser.'},
+    stats:[
+      {v:'11', l:{pt:'sites de vagas', en:'job boards'}},
+      {v:'1', l:{pt:'arquivo HTML, zero instalação', en:'HTML file, zero install'}}
+    ],
+    did:{pt:['Mapeamento do formato de URL de cada portal (LinkedIn, Indeed, Gupy, Catho, InfoJobs e outros)','Frequências (diário, 2–3×/semana, semanal) com cidades e palavras-chave próprias','Linha “★ Todas” com busca booleana combinada','Checklist de progresso, painel de dados para copiar e colar, tema claro/escuro','Deploy no GitHub Pages, licença MIT'],
+         en:['Mapped each board’s URL format (LinkedIn, Indeed, Gupy, Catho, InfoJobs and more)','Frequencies (daily, 2–3×/week, weekly) with their own cities and keywords','“★ All” row with a combined boolean query','Progress checklist, copy-paste profile panel, light/dark theme','Deployed on GitHub Pages, MIT license']},
+    tags:['js','web'],
+    photos:[
+      {src:'img/jobgrid-1.jpg', cap:{pt:'Tela principal', en:'Main screen'}},
+      {src:'img/jobgrid-2.jpg', cap:{pt:'Configurações e busca combinada', en:'Settings and combined search'}}
+    ],
+    links:[
+      {label:{pt:'Abrir app', en:'Open app'}, url:'https://barriviera.github.io/JobGrid/', primary:true},
+      {label:{pt:'Código', en:'Code'}, url:'https://github.com/Barriviera/JobGrid'}
+    ]
+  },
+  {
+    id:'aquavigia', cat:'emb',
+    year:'2024', org:'SESI · Espaço Maker',
+    title:{pt:'AQUA VIGIA: monitoramento automático de caixa d’água', en:'AQUA VIGIA: automatic water-tank monitoring'},
+    short:{pt:'Sensor de distância com ESP32 que mede o nível da caixa d’água e publica na rede Wi-Fi, dispensando a subida semanal para aferir.',
+           en:'ESP32 distance sensor that measures the water-tank level and publishes it over Wi-Fi, removing the weekly climb to check it.'},
+    desc:{pt:'O protocolo da instituição exigia que um funcionário subisse na caixa d’água uma vez por semana só para conferir o nível. Desenvolvemos um sistema com sensor de distância e ESP32 que mede a altura da água continuamente e disponibiliza o nível pela rede Wi-Fi, para ser acompanhado de qualquer computador. Para apresentar o projeto, construímos uma maquete funcional com impressão 3D e corte a laser, com reservatório real, botões para encher e drenar e o corte técnico da estrutura gravado a laser. O trabalho foi apresentado na Jornada STEAM 2024 da rede SESI-SP, e eu constei como autor e orientador.',
+          en:'The institution’s protocol required a staff member to climb the water tower once a week just to check the level. We built a system with a distance sensor and an ESP32 that measures the water height continuously and publishes the level over Wi-Fi, viewable from any computer. To present it, we built a working scale model with 3D printing and laser cutting, including a real reservoir, fill/drain buttons and the structure’s technical section laser-engraved. The work was presented at the 2024 STEAM Journey of the SESI-SP school network, where I was credited as author and advisor.'},
+    stats:[
+      {v:'Wi-Fi', l:{pt:'nível acompanhado pela rede', en:'level monitored over the network'}},
+      {v:'0', l:{pt:'subidas semanais para aferir', en:'weekly climbs to check it'}},
+      {v:'STEAM ’24', l:{pt:'apresentado na Jornada STEAM SESI-SP', en:'presented at SESI-SP STEAM Journey'}}
+    ],
+    did:{pt:['Programação do ESP32 com sensor de distância para medir o nível da água','Publicação do nível na rede Wi-Fi para monitoramento remoto','Maquete de demonstração funcional: torre em impressão 3D, base e corte técnico em corte a laser','Botões de encher/drenar e LEDs para demonstrar o sistema ao vivo','Orientação da equipe de alunos no desenvolvimento'],
+         en:['Programmed the ESP32 with a distance sensor to measure the water level','Published the level over Wi-Fi for remote monitoring','Working demo model: 3D-printed tower, laser-cut base and engraved technical section','Fill/drain buttons and LEDs to demo the system live','Mentored the student team through development']},
+    tags:['c','esp32','sensors','wifi','http','print3d','cnc','vector','proto','hwsw'],
+    photos:[
+      {src:'img/aqua-1.jpg', cap:{pt:'Maquete funcional com reservatório e torre impressa em 3D', en:'Working model with reservoir and 3D-printed tower'}},
+      {src:'img/aqua-esp32.jpg', cap:{pt:'ESP32 e LEDs na base da torre', en:'ESP32 and LEDs at the base of the tower'}},
+      {src:'img/aqua-controles.jpg', cap:{pt:'Botões de encher e drenar para a demonstração', en:'Fill and drain buttons for the demo'}},
+      {src:'img/aqua-corte.jpg', cap:{pt:'Corte técnico da caixa d’água gravado a laser', en:'Laser-engraved technical section of the tower'}},
+      {src:'img/aqua-certificado.jpg', cap:{pt:'Certificado da Jornada STEAM 2024', en:'2024 STEAM Journey certificate'}}
+    ],
+    links:[]
+  },
+  {
+    id:'camisa', cat:'emb',
+    year:'2023 – 2025', org:'SESI · Espaço Maker',
+    title:{pt:'Camiseta háptica para pessoas surdas', en:'Haptic shirt for deaf people'},
+    short:{pt:'Projeto de inclusão: sensores de som e motores de vibração espalhados pela camiseta indicam, pelo tato, de onde vem um som.',
+           en:'Inclusion project: sound sensors and vibration motors spread across a shirt tell the wearer, by touch, where a sound is coming from.'},
+    desc:{pt:'A ideia era transformar som em tato. Distribuímos sensores de som e pequenos motores vibradores ao longo da camiseta, e o microcontrolador compara os sinais e aciona o motor mais próximo da origem do som. Assim, uma pessoa surda consegue perceber de que lado vem um barulho. O grosso do trabalho foi a programação: leitura dos vários sensores, comparação das intensidades e acionamento dos motores.',
+          en:'The idea was to turn sound into touch. We placed sound sensors and small vibration motors along a shirt, and the microcontroller compares the signals and drives the motor closest to the sound’s source, so a deaf person can feel which side a noise is coming from. Most of the work was programming: reading the sensors, comparing intensities and driving the motors.'},
+    stats:[
+      {v:{pt:'som → tato', en:'sound → touch'}, l:{pt:'direção do som sentida na pele', en:'sound direction felt on the skin'}},
+      {v:{pt:'vestível', en:'wearable'}, l:{pt:'sensores e motores costurados', en:'sensors and motors sewn in'}}
+    ],
+    did:{pt:['Programação do microcontrolador para ler vários sensores de som','Lógica para estimar a direção do som comparando as intensidades','Acionamento dos motores de vibração correspondentes','Integração dos sensores, motores e fiação na camiseta'],
+         en:['Programmed the microcontroller to read several sound sensors','Logic to estimate sound direction by comparing intensities','Driving the matching vibration motors','Integrated sensors, motors and wiring into the shirt']},
+    tags:['c','mcu','sensors','proto','hwsw'],
+    photos:[
+      {src:'img/camisa-1.jpg', cap:{pt:'Sensores e motores distribuídos pela camiseta', en:'Sensors and motors spread across the shirt'}},
+      {src:'img/camisa-2.jpg', cap:{pt:'Microcontrolador e fiação no bolso', en:'Microcontroller and wiring in the pocket'}},
+      {src:'img/camisa-uso.jpg', cap:{pt:'Protótipo em teste', en:'Prototype being tested'}}
+    ],
+    links:[]
+  },
+  {
+    id:'celulares', cat:'fab',
+    year:'2023 – 2025', org:'SESI · Espaço Maker',
+    title:{pt:'Estação de carga e guarda de celulares', en:'Phone charging & storage station'},
+    short:{pt:'Caixa com cadeado que guarda e carrega os celulares da instituição, projetada em desenho vetorial e cortada a laser em MDF e acrílico.',
+           en:'Lockable box that stores and charges the institution’s phones, designed as vector drawings and laser-cut in MDF and acrylic.'},
+    desc:{pt:'A instituição precisava carregar e guardar seus celulares com segurança. Projetei uma caixa em MDF e acrílico com encaixes tipo finger joint, compartimentos para os aparelhos, suporte para os carregadores e tampa com cadeado. Todas as peças foram desenhadas em vetor e pensadas em 3D para se encaixarem sem ajuste, e a parte elétrica (tomadas, chave liga/desliga e entrada de energia) foi montada dentro da própria estrutura.',
+          en:'The institution needed to charge and store its phones securely. I designed an MDF-and-acrylic box with finger joints, slots for the phones, a charger rack and a padlocked lid. Every part was drawn as vectors and planned in 3D to fit together without rework, and the electrical side (outlets, power switch and inlet) was built into the structure itself.'},
+    stats:[
+      {v:'16', l:{pt:'aparelhos carregando ao mesmo tempo', en:'devices charging at once'}},
+      {v:'100%', l:{pt:'peças desenhadas e cortadas a laser', en:'parts drawn and laser-cut'}}
+    ],
+    did:{pt:['Desenho vetorial de todas as peças para corte a laser','Planejamento 3D dos encaixes (finger joints) entre MDF e acrílico','Montagem da parte elétrica: tomadas, chave liga/desliga e entrada de energia','Montagem final, acabamento e gravação a laser'],
+         en:['Vector drawings of every part for laser cutting','3D planning of the finger joints between MDF and acrylic','Electrical build: outlets, power switch and power inlet','Final assembly, finishing and laser engraving']},
+    tags:['vector','cnc','fusion','electric','proto'],
+    photos:[
+      {src:'img/celulares-1.jpg', cap:{pt:'Estação em uso, com celulares carregando', en:'Station in use, phones charging'}},
+      {src:'img/celulares-angulo.jpg', cap:{pt:'Tampa de acrílico e encaixes finger joint', en:'Acrylic lid and finger joints'}},
+      {src:'img/celulares-vazia.jpg', cap:{pt:'Compartimentos de carregadores e celulares', en:'Charger and phone compartments'}}
+    ],
+    links:[]
+  }
+];
+
+/* Competências: id do chip = tag usada nos projetos */
+const ICONS = {
+  code:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>',
+  chip:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg>',
+  net:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5a10 10 0 0114 0M8.5 16a5 5 0 017 0M2 9a15 15 0 0120 0"/><circle cx="12" cy="19.5" r="1"/></svg>',
+  data:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>',
+  flow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h6v4H4zM14 14h6v4h-6zM7 10v4a2 2 0 002 2h5M17 14v-4a2 2 0 00-2-2h-5"/></svg>',
+  fab:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 22V12M21 7l-9 5-9-5"/></svg>'
+};
+const SKILLS = [
+  {icon:'code', t:{pt:'Linguagens', en:'Languages'}, d:{pt:'Firmware, processamento de dados e ferramentas web.', en:'Firmware, data processing and web tools.'},
+   chips:[['c','C/C++'],['python','Python'],['js','JavaScript'],['sql','SQL'],['web','HTML/CSS']]},
+  {icon:'chip', t:{pt:'Sistemas embarcados', en:'Embedded systems'}, d:{pt:'Plataformas e técnicas para operar sozinho em campo.', en:'Platforms and techniques for running unattended in the field.'},
+   chips:[['esp32','ESP32'],['rpi','Raspberry Pi'],['mcu',{pt:'Microcontroladores',en:'Microcontrollers'}],['sensors',{pt:'Sensores e câmeras',en:'Sensors & cameras'}],['lowpower',{pt:'Baixo consumo / deep sleep',en:'Low power / deep sleep'}],['solar',{pt:'Energia solar e Li-ion',en:'Solar & Li-ion power'}]]},
+  {icon:'net', t:{pt:'Comunicação', en:'Communication'}, d:{pt:'Interfaces e protocolos entre dispositivos.', en:'Device interfaces and protocols.'},
+   chips:[['i2c','I²C'],['uart','UART'],['rs485','RS-232/422/485'],['wifi','Wi-Fi'],['http',{pt:'Servidor web embarcado',en:'Embedded web server'}]]},
+  {icon:'data', t:{pt:'Dados e imagem', en:'Data & imaging'}, d:{pt:'Aquisição, processamento, armazenamento e disponibilização.', en:'Acquisition, processing, storage and delivery.'},
+   chips:[['data',{pt:'Aquisição de dados',en:'Data acquisition'}],['vision',{pt:'Imagem e profundidade',en:'Imaging & depth'}],['photogram',{pt:'Fotogrametria',en:'Photogrammetry'}],['python','Python']]},
+  {icon:'flow', t:{pt:'Desenvolvimento', en:'Engineering'}, d:{pt:'Da placa ao sistema validado em campo.', en:'From the board to a field-validated system.'},
+   chips:[['pcb',{pt:'Design de PCB (EasyEDA)',en:'PCB design (EasyEDA)'}],['hwsw',{pt:'Integração HW/SW',en:'HW/SW integration'}],['proto',{pt:'Prototipagem',en:'Prototyping'}],['test',{pt:'Testes e validação em campo',en:'Field testing & validation'}]]},
+  {icon:'fab', t:{pt:'Fabricação', en:'Fabrication'}, d:{pt:'Do modelo 3D à peça física.', en:'From 3D model to physical part.'},
+   chips:[['fusion','Fusion 360'],['vector',{pt:'Desenho vetorial',en:'Vector drawing'}],['print3d',{pt:'Impressão 3D',en:'3D printing'}],['cnc',{pt:'Usinagem, CNC e laser',en:'Machining, CNC & laser'}],['electric',{pt:'Montagem elétrica',en:'Electrical assembly'}]]}
+];
+const IMPLIED = {};
+
+const TIMELINE = [
+  {when:{pt:'mar 2025 – mai 2026', en:'Mar 2025 – May 2026'}, org:'SmartAgri', role:{pt:'Pesquisa e Desenvolvimento', en:'Research & Development'},
+   items:{pt:['Coletor de esporos autônomo com energia solar e data logger ESP32, em uso por clientes e validado em campo','Camada de aquisição RGB + profundidade para fenotipagem de plantas','Adaptação de um microscópio automatizado (Squid) para escanear lâminas e gerar dados para IA','PCB própria unificando os conversores RS-422/RS-485 → UART','Diagnóstico, correção de falhas e validação em campo, do protótipo à implantação'],
+          en:['Solar-powered autonomous spore trap with an ESP32 data logger, used by clients and field-validated','RGB + depth acquisition layer for plant phenotyping','Adapted an automated microscope (Squid) to scan slides and produce AI training data','Custom PCB unifying the RS-422/RS-485 → UART converters','Troubleshooting and field validation, from prototype to deployment']}},
+  {when:{pt:'ago 2023 – mar 2025', en:'Aug 2023 – Mar 2025'}, org:'SESI', role:{pt:'Estagiário em Desenvolvimento e Prototipagem', en:'Development & Prototyping Intern'},
+   items:{pt:['AQUA VIGIA: monitoramento de caixa d’água com ESP32 e Wi-Fi, apresentado na Jornada STEAM 2024','Camiseta háptica que traduz a direção do som em vibração, para pessoas surdas','Estação de carga e guarda de celulares cortada a laser','Programação de microcontroladores e integração eletrônica + software + estrutura','Modelagem 3D e peças funcionais por impressão 3D','Arquivos para CNC e corte a laser','Operação e manutenção de equipamentos de fabricação digital','Planejamento e execução de projetos de prototipagem'],
+          en:['AQUA VIGIA: ESP32 + Wi-Fi water-tank monitoring, presented at the 2024 STEAM Journey','Haptic shirt that turns sound direction into vibration for deaf people','Laser-cut phone charging and storage station','Microcontroller programming; electronics + software + structure integration','3D modelling and functional 3D-printed parts','CNC and laser-cutting files','Operating and maintaining digital fabrication equipment','Planning and running prototyping projects']}},
+  {when:{pt:'jan 2019 – set 2021', en:'Jan 2019 – Sep 2021'}, org:'BRV Usinagem', role:{pt:'Operador de Usinagem', en:'Machining Operator'},
+   items:{pt:['Operação e ajuste de processos de usinagem','Leitura e interpretação de desenhos técnicos','Controle dimensional e inspeção de peças'],
+          en:['Operating and tuning machining processes','Reading technical drawings','Dimensional control and part inspection']}},
+  {edu:true, when:{pt:'conclusão: ago 2026', en:'Completed: Aug 2026'}, org:'IFSP', role:{pt:'Engenharia de Computação', en:'B.Eng. Computer Engineering'},
+   items:{pt:['Instituto Federal de São Paulo, campus Piracicaba','Projeto Final de Curso: Coletor de Esporos com Sistema Embarcado de Monitoramento Ambiental','Inglês técnico'],
+          en:['Federal Institute of São Paulo, Piracicaba campus','Capstone: Spore Trap with Embedded Environmental Monitoring','Technical English']}}
+];
+
+/* ------------------------- TEXTOS DA INTERFACE ------------------------ */
+const I18N = {
+  pt:{},
+  en:{
+    'nav.projects':'Projects','nav.skills':'Skills','nav.path':'Journey','nav.contact':'Contact',
+    'hero.role':'Computer Engineer · Embedded Systems, IoT & Automation',
+    'hero.lead':'I design and integrate hardware and software for IoT and automation — sensors, microcontrollers, device communication and autonomous systems — taking projects from requirements and prototyping all the way to deployment and field validation.',
+    'hero.cta1':'See projects','hero.cta2':'Download résumé','hero.cta3':'Contact',
+    'ds.tag':'embedded · IoT · automation','ds.f':'Role','ds.fv':'Computer Eng. — embedded, IoT & automation','ds.lang':'Languages','ds.hw':'Platforms','ds.loc':'Location','ds.locv':'Jundiaí-SP, Brazil · open to relocation','ds.edu':'Education','ds.io':'Communication','ds.iov':'Serial, industrial and wireless protocols','ds.eduv':'Computer Eng. — IFSP (2026)',
+    'proj.tag':'projects','proj.title':'Featured projects','proj.using':'Projects using','proj.clear':'clear filter',
+    'sk.tag':'skills','sk.title':'Stack & skills','sk.sub':'Click a technology to see the projects that use it.',
+    'tl.tag':'journey','tl.title':'Experience & education','tl.sub':'A path that started in machining, went through digital fabrication and led to embedded systems and IoT.',
+    'ct.tag':'contact','ct.title':'Let’s talk','ct.sub':'Embedded systems, IoT, automation and R&D. Reach me on whichever channel you prefer.','ct.copy':'copy','ct.phone':'Phone / WhatsApp',
+    'ft':'hand-made in HTML/CSS/JS · hosted on GitHub Pages','m.did':'What I did','m.stack':'Technologies',
+    'draft':'to fill in','more':'details','copied':'copied!'
+  }
+};
+const PT_EXTRA = {'draft':'a preencher','more':'detalhes','copied':'copiado!'};
+
+/* ============================ LÓGICA ================================= */
+let lang = 'pt', cat = 'all', skill = null, cur = null, photoIdx = 0;
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const tr = v => (v && typeof v === 'object' && !Array.isArray(v)) ? (v[lang] ?? v.pt) : v;
+const t = k => lang === 'en' ? (I18N.en[k] ?? PT_EXTRA[k] ?? k) : (PT_EXTRA[k] ?? k);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const allTags = p => [...p.tags, ...(IMPLIED[p.id] || [])];
+const skillLabel = id => { for (const g of SKILLS) for (const [k, l] of g.chips) if (k === id) return tr(l); return id; };
+
+// cache PT originals of static text
+$$('[data-i18n]').forEach(el => el.dataset.pt = el.innerHTML);
+
+function photoHTML(ph, alt){
+  return `<div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-8 8"/></svg><small>${esc(ph.src)}</small></div>
+          <img src="${esc(ph.src)}" alt="${esc(alt)}" loading="lazy" onerror="this.remove()">`;
+}
+
+function renderFilters(){
+  $('#filters').innerHTML = Object.entries(CATS).map(([k, v]) =>
+    `<button data-cat="${k}" class="${k === cat && !skill ? 'on' : ''}">${esc(tr(v))}</button>`).join('');
+}
+
+function renderGrid(){
+  $('#grid').innerHTML = PROJECTS.map(p => {
+    const show = skill ? allTags(p).includes(skill) : (cat === 'all' || p.cat === cat);
+    const stack = p.tags.slice(0, 5).map(tg => `<span class="${tg === skill ? 'hit' : ''}">${esc(skillLabel(tg))}</span>`).join('');
+    return `<button class="card rv in ${show ? '' : 'hide'}" data-id="${p.id}">
+      <div class="media">${photoHTML(p.photos[0], tr(p.title))}
+        <span class="cat">${esc(tr(CATS[p.cat]))}</span>${p.draft ? `<span class="draft">✎ ${t('draft')}</span>` : ''}</div>
+      <div class="body">
+        <span class="yr">${esc(p.year)} · ${esc(tr(p.org))}</span>
+        <h3>${esc(tr(p.title))}</h3>
+        <p>${esc(tr(p.short))}</p>
+        <div class="stack">${stack}</div>
+        <span class="more">${t('more')} <span class="arr">→</span></span>
+      </div></button>`;
+  }).join('');
+}
+
+function renderSkills(){
+  $('#skills').innerHTML = SKILLS.map(g => `<div class="sk rv">
+    <div class="ic">${ICONS[g.icon]}</div><h3>${esc(tr(g.t))}</h3><p>${esc(tr(g.d))}</p>
+    <div class="chips">${g.chips.map(([id, l]) => {
+      const n = PROJECTS.filter(p => allTags(p).includes(id)).length;
+      return `<button class="chipbtn" data-skill="${id}" ${n ? `data-count="${n}"` : 'tabindex="-1"'}>${esc(tr(l))}</button>`;
+    }).join('')}</div></div>`).join('');
+  observe();
+}
+
+function renderTimeline(){
+  $('#timeline').innerHTML = TIMELINE.map((e, i) => `<div class="ti rv ${e.edu ? 'edu' : ''} ${i === 0 ? 'open' : ''}">
+    <button class="ti-h" aria-expanded="${i === 0}">
+      <span class="when">${esc(tr(e.when))}</span>
+      <h3>${esc(tr(e.org))} <small>— ${esc(tr(e.role))}</small></h3>
+      <span class="tog">+</span>
+    </button>
+    <div class="ti-b"><div><ul>${tr(e.items).map(x => `<li>${esc(x)}</li>`).join('')}</ul></div></div></div>`).join('');
+  observe();
+}
+
+function applyStatic(){
+  document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+  $$('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n;
+    el.innerHTML = lang === 'en' && I18N.en[k] ? I18N.en[k] : (PT_EXTRA[k] && lang==='pt' ? PT_EXTRA[k] : el.dataset.pt);
+  });
+  $$('.lang button').forEach(b => b.classList.toggle('on', b.dataset.lang === lang));
+}
+
+function renderAll(){
+  applyStatic(); renderFilters(); renderGrid(); renderSkills(); renderTimeline(); updateSkillBar(); runSerial();
+  if (cur) openModal(cur, photoIdx);
+}
+
+function setLang(l){
+  lang = l;
+  try { localStorage.setItem('pb_lang', l); } catch(e){}
+  renderAll();
+}
+
+function updateSkillBar(){
+  $('#activeSkill').classList.toggle('show', !!skill);
+  if (skill) $('#activeSkillName').textContent = skillLabel(skill);
+}
+
+/* ---------- modal ---------- */
+function openModal(id, idx = 0){
+  const p = PROJECTS.find(x => x.id === id); if (!p) return;
+  cur = id; photoIdx = idx;
+  $('#mMeta').textContent = `${p.year} · ${tr(p.org)} · ${tr(CATS[p.cat])}`;
+  $('#mTitle').textContent = tr(p.title);
+  $('#mDesc').textContent = tr(p.desc);
+  $('#mStats').innerHTML = (p.stats || []).map(k => `<div><b>${esc(lang === 'en' && k.ven ? k.ven : tr(k.v))}</b><span>${esc(tr(k.l))}</span></div>`).join('');
+  $('#mList').innerHTML = tr(p.did).map(x => `<li>${esc(x)}</li>`).join('');
+  $('#mStack').innerHTML = p.tags.map(tg => `<span>${esc(skillLabel(tg))}</span>`).join('');
+  $('#mLinks').innerHTML = (p.links || []).map(l =>
+    `<a class="btn ${l.primary ? 'primary' : ''}" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(tr(l.label))} ↗</a>`).join('');
+  renderGallery(p);
+  if (!$('#modal').classList.contains('show')){
+    $('#modal').classList.add('show'); document.body.style.overflow = 'hidden'; $('#mClose').focus();
+  }
+}
+function renderGallery(p){
+  const ph = p.photos[photoIdx], many = p.photos.length > 1;
+  $('#gal').innerHTML = `<div class="frame">${photoHTML(ph, tr(ph.cap))}</div>
+    ${tr(ph.cap) ? `<div class="cap">${esc(tr(ph.cap))}</div>` : ''}
+    ${many ? `<button class="nav-b prev" aria-label="Anterior">‹</button><button class="nav-b next" aria-label="Próxima">›</button>
+    <div class="dots">${p.photos.map((_, i) => `<button data-i="${i}" class="${i === photoIdx ? 'on' : ''}" aria-label="${i + 1}"></button>`).join('')}</div>` : ''}`;
+}
+function step(d){
+  const p = PROJECTS.find(x => x.id === cur); if (!p) return;
+  photoIdx = (photoIdx + d + p.photos.length) % p.photos.length; renderGallery(p);
+}
+function closeModal(){
+  $('#modal').classList.remove('show'); document.body.style.overflow = '';
+  const card = $(`.card[data-id="${cur}"]`); cur = null; card && card.focus();
+}
+
+/* ---------- serial monitor ---------- */
+let serialTimer;
+function runSerial(){
+  clearTimeout(serialTimer);
+  const L = lang === 'en';
+  const lines = [
+    ['c', L ? '// connecting to pedro_barriviera…' : '// conectando a pedro_barriviera…'],
+    ['k', '> last_build', 'v', L ? '  spore trap · phenotyping · microscope' : '  coletor de esporos · fenotipagem · microscópio'],
+    ['k', '> focus', 'v', L ? '  embedded · IoT · automation · R&D' : '  embarcados · IoT · automação · P&D'],
+    ['k', '> location', 'v', L ? '  Jundiaí-SP → relocation OK' : '  Jundiaí-SP → mudança OK'],
+    ['k', '> languages', 'v', L ? '  PT (native) · EN (technical)' : '  PT (nativo) · EN (técnico)'],
+    ['k', '> response_time', 'v', L ? '  fast :)' : '  rápido :)'],
+    ['c', L ? '// awaiting your message_' : '// aguardando sua mensagem_']
+  ];
+  const html = lines.map(l => l.length === 2
+    ? `<span class="${l[0]}">${esc(l[1])}</span>`
+    : `<span class="${l[0]}">${esc(l[1])}</span>\n<span class="${l[2]}">${esc(l[3])}</span>`);
+  const pre = $('#serial');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches){ pre.innerHTML = html.join('\n'); return; }
+  pre.innerHTML = ''; let i = 0;
+  const go = () => { if (i < html.length){ pre.innerHTML += (i ? '\n' : '') + html[i++]; serialTimer = setTimeout(go, 380); } };
+  pre.dataset.run = '1';
+  if (pre.dataset.seen) go(); else pre._go = go;
+}
+
+/* ---------- boot line ---------- */
+function boot(){
+  const el = $('#boot'), txt = '> boot pedro_barriviera v2026 … ';
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches){ el.innerHTML = esc(txt) + '<b>[ OK ]</b>'; return; }
+  let i = 0; const tick = () => { if (i <= txt.length){ el.textContent = txt.slice(0, i++); setTimeout(tick, 28); } else el.innerHTML = esc(txt) + '<b>[ OK ]</b>'; };
+  setTimeout(tick, 300);
+}
+
+/* ---------- reveal + active nav ---------- */
+let io;
+function observe(){
+  if (!('IntersectionObserver' in window)){ $$('.rv').forEach(e => e.classList.add('in')); return; }
+  io = io || new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold:.12});
+  $$('.rv:not(.in)').forEach(e => io.observe(e));
+}
+function navSpy(){
+  const secs = ['projetos','competencias','trajetoria','contato'].map(id => document.getElementById(id));
+  const onScroll = () => {
+    $('#nav').classList.toggle('scrolled', scrollY > 10);
+    let act = null; secs.forEach(s => { if (s.getBoundingClientRect().top < innerHeight * .4) act = s.id; });
+    $$('#menu a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + act));
+  };
+  addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  const sp = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ const pre = $('#serial'); if (!pre.dataset.seen){ pre.dataset.seen = 1; pre._go && pre._go(); } } }), {threshold:.4});
+  sp.observe($('#serial'));
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click', e => {
+  const b = e.target.closest('button, a'); if (!b) return;
+  if (b.dataset.lang) return setLang(b.dataset.lang);
+  if (b.dataset.cat){ cat = b.dataset.cat; skill = null; renderFilters(); renderGrid(); updateSkillBar(); return; }
+  if (b.dataset.skill && b.dataset.count){
+    skill = b.dataset.skill; renderFilters(); renderGrid(); updateSkillBar();
+    document.getElementById('projetos').scrollIntoView({behavior:'smooth'}); return;
+  }
+  if (b.id === 'clearSkill'){ skill = null; cat = 'all'; renderFilters(); renderGrid(); updateSkillBar(); return; }
+  if (b.classList.contains('card')) return openModal(b.dataset.id);
+  if (b.id === 'mClose') return closeModal();
+  if (b.classList.contains('prev')) return step(-1);
+  if (b.classList.contains('next')) return step(1);
+  if (b.closest('.dots') && b.dataset.i){ photoIdx = +b.dataset.i; renderGallery(PROJECTS.find(x => x.id === cur)); return; }
+  if (b.classList.contains('ti-h')){
+    const ti = b.parentElement, o = ti.classList.toggle('open'); b.setAttribute('aria-expanded', o); return;
+  }
+  if (b.dataset.copy){
+    e.preventDefault();
+    const done = () => { b.textContent = t('copied'); setTimeout(() => b.textContent = lang === 'en' ? 'copy' : 'copiar', 1500); };
+    (navigator.clipboard ? navigator.clipboard.writeText(b.dataset.copy) : Promise.reject()).then(done).catch(done);
+    return;
+  }
+  if (b.id === 'burger'){ const o = $('#nav').classList.toggle('open'); b.setAttribute('aria-expanded', o); return; }
+  if (b.closest('#menu')) $('#nav').classList.remove('open');
+});
+$('#modal').addEventListener('click', e => { if (e.target.id === 'modal') closeModal(); });
+document.addEventListener('keydown', e => {
+  if (!cur) return;
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'ArrowRight') step(1);
+  if (e.key === 'ArrowLeft') step(-1);
+});
+let tx = null;
+$('#gal').addEventListener('touchstart', e => tx = e.touches[0].clientX, {passive:true});
+$('#gal').addEventListener('touchend', e => { if (tx === null) return; const d = e.changedTouches[0].clientX - tx; if (Math.abs(d) > 40) step(d < 0 ? 1 : -1); tx = null; });
+
+/* ---------- init ---------- */
+$('#yr').textContent = new Date().getFullYear();
+try { const s = localStorage.getItem('pb_lang'); if (s === 'en' || s === 'pt') lang = s; else if ((navigator.language || '').slice(0,2) !== 'pt') lang = 'en'; } catch(e){}
+renderAll(); boot(); observe(); navSpy();
+</script>
+</body>
+</html>
